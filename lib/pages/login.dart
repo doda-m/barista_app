@@ -6,7 +6,6 @@ class LoginPage extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-
 class _LoginState extends State<LoginPage> {
 
   final formKey = new GlobalKey<FormState>();

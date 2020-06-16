@@ -1,16 +1,20 @@
+import 'package:barista_app/background/ctlAccount.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:barista_app/pages/SettingAccount.dart';
 
 class MemberPage extends StatefulWidget {
   @override
   _MemberState createState() => _MemberState();
 }
 
-class _MemberState extends State<MemberPage> {
+class _MemberState extends State<MemberPage> with RouteAware {
 
-  List listItem = ["one","two","three"];
+  Set _memberSet;
   String _username;
 
-  AlertDialog _pushDialog() {
+  AlertDialog _pushDialog(ControlMemberDatabase _controlMemberDatabese) {
     return AlertDialog(
       title: Text('Enter your account name'),
       content: Container(
@@ -36,8 +40,16 @@ class _MemberState extends State<MemberPage> {
       ),
       actions: [
         FlatButton(
-          child: Text('OK', style: TextStyle( color: Colors.orangeAccent, ), ),
-          onPressed: () => Navigator.of(context).pop(_username),
+          child: Text('OK', style: TextStyle(color: Colors.orangeAccent,),),
+          onPressed: () {
+            setState(() {
+              _memberSet = _controlMemberDatabese.addMember(_username);
+            });
+            Navigator.of(context).pop();
+          },
+          onLongPress: () {
+            null;
+          },
         )
       ],
     );
@@ -45,27 +57,50 @@ class _MemberState extends State<MemberPage> {
 
   @override
   Widget build(BuildContext context) {
+    ControlMemberDatabase ctrMemberDb;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Member'),
         backgroundColor: Colors.orangeAccent,
       ),
-      body: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text('$index'),
-              subtitle: Text(listItem[index].toString()),
-              onTap: () => Navigator.of(context).pushNamed('/fill'),
-              onLongPress: null,
-            );
-          },
-          itemCount: listItem.length,
+      body: FutureBuilder(
+        future: SharedPreferences.getInstance(),
+        builder: (BuildContext context, AsyncSnapshot <SharedPreferences> snapshot) {
+          if(snapshot.hasData) {
+            ctrMemberDb = ControlMemberDatabase(snapshot.data);
+            _memberSet = ctrMemberDb.readMemberSet();
+          }
+          else {
+            return CircularProgressIndicator();
+          }
+          return ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(_memberSet.elementAt(index).toString()),
+                onTap: () => Navigator.of(context).pushNamed('/fill'),
+                onLongPress: () {
+                  setState(() {
+                    Navigator.push(
+                      this.context,
+                      MaterialPageRoute(
+                        builder: (context) => SettingAccountPage(
+                          username: _memberSet.elementAt(index).toString(),
+                        ),
+                      )
+                    );
+                  });
+                }
+              );
+            },
+            itemCount: _memberSet.isEmpty ? 0:_memberSet.length,
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
             context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) => _pushDialog(),
+            builder: (BuildContext context) => _pushDialog(ctrMemberDb),
         ),
         tooltip: 'add account',
         backgroundColor: Colors.orangeAccent,

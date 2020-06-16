@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:barista_app/background/ctlAccount.dart';
 
 class BrewCoffeePage extends StatefulWidget {
+  final String username;
+  BrewCoffeePage({Key key, this.username}): super(key: key);
+
   @override
   _BrewCoffeeState createState() => _BrewCoffeeState();
 }
