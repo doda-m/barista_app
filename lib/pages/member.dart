@@ -74,31 +74,8 @@ class _MemberState extends State<MemberPage> with RouteAware {
           }
           return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(_memberSet.elementAt(index).toString()),
-                onTap: () {
-                  Navigator.push(
-                    this.context,
-                    MaterialPageRoute(
-                      builder: (context) => BrewCoffeePage(
-                        usernamePage: _memberSet.elementAt(index).toString(),
-                      )
-                    )
-                  );
-                },
-                onLongPress: () {
-                  setState(() {
-                    Navigator.push(
-                      this.context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingAccountPage(
-                          username: _memberSet.elementAt(index).toString(),
-                        ),
-                      )
-                    );
-                  });
-                }
-              );
+              return _memberListView(
+              _memberSet.elementAt(index).toString(), index);
             },
             itemCount: _memberSet.isEmpty ? 0:_memberSet.length,
           );
@@ -112,6 +89,50 @@ class _MemberState extends State<MemberPage> with RouteAware {
         tooltip: 'add account',
         backgroundColor: Colors.orangeAccent,
         child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _memberListView(String title, int index) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 2.0,
+            color: Colors.grey
+          )
+        )
+      ),
+      child: ListTile(
+        title: Text('${index + 1}. $title',
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.black87,
+              fontFamily: 'FuturaRound',
+              fontWeight: FontWeight.w600,
+            ),),
+        onTap: () {
+          Navigator.push(
+              this.context,
+              MaterialPageRoute(
+                  builder: (context) => BrewCoffeePage(
+                    usernamePage: _memberSet.elementAt(index).toString(),
+                  )
+              )
+          );
+        },
+        onLongPress: () {
+          setState(() {
+            Navigator.push(
+                this.context,
+                MaterialPageRoute(
+                  builder: (context) => SettingAccountPage(
+                    username: _memberSet.elementAt(index).toString(),
+                  ),
+                )
+            );
+          });
+        },
       ),
     );
   }
