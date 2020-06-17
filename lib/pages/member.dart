@@ -1,4 +1,5 @@
 import 'package:barista_app/background/ctlAccount.dart';
+import 'package:barista_app/pages/brewCoffee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,12 +44,9 @@ class _MemberState extends State<MemberPage> with RouteAware {
           child: Text('OK', style: TextStyle(color: Colors.orangeAccent,),),
           onPressed: () {
             setState(() {
-              _memberSet = _controlMemberDatabese.addMember(_username);
+              _controlMemberDatabese.addMember(_username);
             });
             Navigator.of(context).pop();
-          },
-          onLongPress: () {
-            null;
           },
         )
       ],
@@ -78,7 +76,16 @@ class _MemberState extends State<MemberPage> with RouteAware {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text(_memberSet.elementAt(index).toString()),
-                onTap: () => Navigator.of(context).pushNamed('/fill'),
+                onTap: () {
+                  Navigator.push(
+                    this.context,
+                    MaterialPageRoute(
+                      builder: (context) => BrewCoffeePage(
+                        usernamePage: _memberSet.elementAt(index).toString(),
+                      )
+                    )
+                  );
+                },
                 onLongPress: () {
                   setState(() {
                     Navigator.push(

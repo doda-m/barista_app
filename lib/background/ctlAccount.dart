@@ -13,36 +13,57 @@ class ControlMemberDatabase {
     return _memberSet;
   }
 
-  Set addMember(String name) {
+  int readCounter(String name) {
+    return _prefs.getInt(name);
+  }
+
+  bool setCounter(String name, int value) {
+    if (-1 == (_prefs.getInt(name) ?? -1)) {
+      return false;
+    }
+    else {
+      _prefs.setInt(name, value);
+      return true;
+    }
+  }
+
+  bool addMember(String name) {
     if (-1 == (_prefs.getInt(name) ?? -1)) {
       _prefs.setInt(name, 0);
       _memberSet = _prefs.getKeys();
+      return true;
     }
     else {
-      AlertDialog(
-        title: Text('This name has already been.'),
-      );
+      return false;
     }
-    return _memberSet;
   }
 
-  void deleteMember(String name) {
-    _memberSet = _prefs.getKeys();
-    if (_memberSet.contains(name)) {
-      _prefs.remove(name);
-      _memberSet = _prefs.getKeys();
+  bool deleteMember(String name) {
+    if (-1 == (_prefs.getInt(name) ?? -1)) {
+      return false;
     }
     else{
-      _prefs.clear();
+      _prefs.remove(name);
+      _memberSet = _prefs.getKeys();
+      return true;
     }
   }
 
-  void renameMember(String oldName, String newName) {
-    int value = _prefs.getInt(oldName);
-    _prefs.remove(oldName);
-    _prefs.setInt(newName, value);
+  bool renameMember(String oldName, String newName) {
+    int value = (_prefs.getInt(oldName) ?? -1);
+    if (-1 == value) {
+      return false;
+    }
+    else {
+      if (-1 == (_prefs.getInt(newName) ?? -1)) {
+        _prefs.remove(oldName);
+        _prefs.setInt(newName, value);
+        _memberSet = _prefs.getKeys();
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
   }
-
-
-
 }

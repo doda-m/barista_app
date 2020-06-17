@@ -2,18 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:barista_app/background/ctlAccount.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DeleteAccountPage extends StatefulWidget {
+class DeleteAccountPage extends StatelessWidget {
   final String username;
   DeleteAccountPage({Key key, this.username}): super(key: key);
-
-  @override
-  _DeleteAccountState createState() => _DeleteAccountState(username);
-}
-
-class _DeleteAccountState extends State<DeleteAccountPage> {
-  final String usernameState;
-  _DeleteAccountState(this.usernameState);
-  ControlMemberDatabase ctrMemberDb;
+  static ControlMemberDatabase _ctrMemberDb;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +18,7 @@ class _DeleteAccountState extends State<DeleteAccountPage> {
         future: SharedPreferences.getInstance(),
         builder: (BuildContext context, AsyncSnapshot <SharedPreferences> snapshot) {
           if (snapshot.hasData) {
-            ctrMemberDb = ControlMemberDatabase(snapshot.data);
+            _ctrMemberDb = ControlMemberDatabase(snapshot.data);
           }
           else {
             return CircularProgressIndicator();
@@ -53,11 +45,9 @@ class _DeleteAccountState extends State<DeleteAccountPage> {
                     ),
                     color: Colors.redAccent,
                     onPressed: () {
-                      setState(() {
-                        ctrMemberDb.deleteMember(usernameState);
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.of(context).pushReplacementNamed('/member');
-                      });
+                      _ctrMemberDb.deleteMember(username);
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.of(context).pushReplacementNamed('/member');
                     },
                   ),
                 )

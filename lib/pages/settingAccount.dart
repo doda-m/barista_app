@@ -1,12 +1,10 @@
-import 'package:barista_app/background/ctlAccount.dart';
 import 'package:barista_app/pages/deleteAccount.dart';
+import 'package:barista_app/pages/renameAccount.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingAccountPage extends StatelessWidget with RouteAware{
   final String username;
-  final ControlMemberDatabase ctrMemberDb;
-  SettingAccountPage({Key key, this.username, this.ctrMemberDb}): super(key: key);
+  SettingAccountPage({Key key, this.username}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,14 @@ class SettingAccountPage extends StatelessWidget with RouteAware{
                 ),),
                 color: Colors.orangeAccent,
                 onPressed: () {
-                  null;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RenameAccountPage(
+                            oldName: username
+                        )
+                    ),
+                  );
                 },
               )
             ),
@@ -46,12 +51,12 @@ class SettingAccountPage extends StatelessWidget with RouteAware{
                 color: Colors.redAccent,
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DeleteAccountPage(
-                            username: username,
-                          )
-                      )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DeleteAccountPage(
+                          username: username,
+                        )
+                    ),
                   );
                 },
               ),
