@@ -117,7 +117,7 @@ class _BrewCoffeeState extends State<BrewCoffeePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('No. Coffee'),
+                        Text('No. Times'),
                         Text(
                           '$_counter',
                           style: Theme.of(context).textTheme.headline4,
