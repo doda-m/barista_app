@@ -1,5 +1,5 @@
-import 'brewCoffee.dart';
 import 'package:flutter/material.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,40 +7,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginPage> {
-
-  final formKey = new GlobalKey<FormState>();
-
-  String _userid;
-  String _password;
-
-  void _gotohomepage() {
-    Navigator.of(context).pushReplacementNamed('/fill');
-  }
-
-  void ValidationAndSave() {
-    final form = formKey.currentState;
-
-    if (form.validate()) {
-      form.save();
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-            settings: const RouteSettings(name: 'fill'),
-            builder: (context) {
-              return BrewCoffeePage();
-            }
-        ),
-      );
-    }
-    else {
-      print('wrong');
-    }
-  }
+  final emailInputController = TextEditingController();
+  final passwordInputController = TextEditingController();
+//  final _firebaseAuth = FirebaseAuth.instance;
+//
+//  Future<AuthResult> _signIn(String email, String password) async {
+//    final AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+//        email: email, password: password);
+//    print("User id is ${result.user.uid}");
+//    return result;
+//  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Login'),
+        backgroundColor: Colors.orangeAccent,
       ),
       body: new Center(
         child: new Form(
@@ -51,28 +34,34 @@ class _LoginState extends State<LoginPage> {
               children: <Widget>[
                 const SizedBox(height: 24.0),
                 new TextFormField(
+                  controller: emailInputController,
                   decoration: const InputDecoration(
                     border: const UnderlineInputBorder(),
-                    labelText: 'User ID',
+                    labelText: 'Email',
                   ),
                   validator: (value) => value.isEmpty ? 'User Id can\'t be empty' : null,
-                  onSaved: (value) => _userid = value,
                 ),
                 const SizedBox(height: 24.0),
                 new TextFormField(
+                  controller: passwordInputController,
                   decoration: InputDecoration(
                     border: const UnderlineInputBorder(),
                     labelText: 'Password',
                   ),
                   obscureText: true,
                   validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-                  onSaved: (value) => _password = value,
                 ),
                 const SizedBox(height: 24.0),
                 new Center(
                   child: RaisedButton(
                     child: Text('Login'),
-                    onPressed: _gotohomepage,
+                    onPressed: () {
+                      var email = emailInputController.text;
+                      var password = passwordInputController.text;
+//                      return _signIn(email, password)
+//                          .then((AuthResult result) => print(result.user))
+//                          .catchError((e) => print(e));
+                    },
                   ),
                 )
               ],
