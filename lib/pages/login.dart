@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'admin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,14 +10,30 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   final emailInputController = TextEditingController();
   final passwordInputController = TextEditingController();
-//  final _firebaseAuth = FirebaseAuth.instance;
-//
-//  Future<AuthResult> _signIn(String email, String password) async {
-//    final AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
-//        email: email, password: password);
-//    print("User id is ${result.user.uid}");
-//    return result;
-//  }
+  final _firebaseAuth = FirebaseAuth.instance;
+
+  Future<AuthResult> _signIn(String email, String password) async {
+    AuthResult result;
+    try {
+      result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      print("User id is ${result.user.uid}");
+      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminPage()
+        )
+      );
+    }
+    catch(e) {
+      print('error: $e');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => _pushDialog(),
+      );
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +75,7 @@ class _LoginState extends State<LoginPage> {
                     onPressed: () {
                       var email = emailInputController.text;
                       var password = passwordInputController.text;
-//                      return _signIn(email, password)
+                      return _signIn(email, password);
 //                          .then((AuthResult result) => print(result.user))
 //                          .catchError((e) => print(e));
                     },
@@ -69,6 +86,20 @@ class _LoginState extends State<LoginPage> {
           ),
         )
       ),
+    );
+  }
+
+  AlertDialog _pushDialog() {
+    return AlertDialog(
+      title: Text('Email address or Password was wrong.'),
+      actions: [
+        FlatButton(
+          child: Text('OK', style: TextStyle(color: Colors.orangeAccent,),),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }
