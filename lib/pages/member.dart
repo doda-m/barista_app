@@ -60,7 +60,6 @@ class _MemberState extends State<MemberPage> with RouteAware {
         onTap: (index) {
           switch(index) {
             case 0: {
-//              Navigator.of(context).pushReplacementNamed('/member');
               break;
             }
             case 1: {

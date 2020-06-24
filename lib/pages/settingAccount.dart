@@ -10,7 +10,7 @@ class SettingAccountPage extends StatelessWidget with RouteAware{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting Account'),
+        title: Text('Account Setting'),
         backgroundColor: Colors.orangeAccent,
       ),
       body: Center(

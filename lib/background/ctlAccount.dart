@@ -26,6 +26,14 @@ class ControlMemberDatabase {
     }
   }
 
+  bool resetCounter() {
+    _memberSet = _prefs.getKeys();
+    _memberSet.forEach((element) {
+      _prefs.setInt(element.toString(), 0);
+    });
+    return true;
+  }
+
   bool addMember(String name) {
     if (-1 == (_prefs.getInt(name) ?? -1)) {
       _prefs.setInt(name, 0);

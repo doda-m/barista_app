@@ -34,24 +34,27 @@ class RenameAccountPage extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                TextFormField(
-                  cursorColor: Colors.grey,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(
-                      color: Colors.orangeAccent,
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  child: TextFormField(
+                    cursorColor: Colors.grey,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Colors.orangeAccent,
+                      ),
+                      labelText: 'New Account Name',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.orangeAccent,
+                          )
+                      ),
                     ),
-                    labelText: 'New Account Name',
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.orangeAccent,
-                        )
-                    ),
+                    maxLength: 16,
+                    maxLengthEnforced: false,
+                    maxLines: 1,
+                    onChanged: (value) => _newName = value,
                   ),
-                  maxLength: 16,
-                  maxLengthEnforced: false,
-                  maxLines: 1,
-                  onChanged: (value) => _newName = value,
                 ),
                 SizedBox(
                   width: 300.0,
