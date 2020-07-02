@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ControlMemberDatabase {
   final SharedPreferences _prefs;
@@ -37,7 +38,10 @@ class ControlMemberDatabase {
   bool addMember(String name) {
     if (-1 == (_prefs.getInt(name) ?? -1)) {
       _prefs.setInt(name, 0);
-      _memberSet = _prefs.getKeys();
+//      Firestore.instance.collection("Name").document("mgYgwTnkkr0930gfBbhC").updateData({
+//        "Name": name,
+//        "Counter": 0
+//      });
       return true;
     }
     else {

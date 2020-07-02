@@ -9,7 +9,7 @@ class ResetCounterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Delete Your Account'),
+        title: Text('Reset Counter'),
         backgroundColor: Colors.orangeAccent,
       ),
       body: FutureBuilder(
@@ -35,7 +35,7 @@ class ResetCounterPage extends StatelessWidget {
                   width: 300.0,
                   height: 70.0,
                   child: RaisedButton(
-                    child: Text('Reset Counter',
+                    child: Text('Reset All',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
